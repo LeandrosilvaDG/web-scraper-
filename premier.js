@@ -14,11 +14,11 @@ const self = {
     });
     self.page = await self.browser.newPage();
 
-    await self.page.goto(SATS_URL(stats), {waitUntil: 'networkidle0'});
+    await self.page.goto(SATS_URL(stats), { waitUntil: 'networkidle0' });
   
   },
 
-  getResults: async (nr = 20) => {
+  getResults: async (nr) => {
 
     let results =[];
 
@@ -27,19 +27,19 @@ const self = {
       let new_results = await self.parseResults();
 
       results = [...results, ...new_results ];
+      
+      if(results.length < nr) {
 
-      if(results.elements < nr) {
+        let nextPage = await self.page.waitForSelector('.paginationContainer > .paginationNextContainer');
 
-        let nextPage = await self.page.$('document.querySelector(div[class*="paginationNextContainer"])');
+        // let nextPage = await self.page.$('document.querySelector(".paginationContainer > .paginationNextContainer")');
 
         if(nextPage) {
 
           await nextPage.click();
-          
-          await self.page.waitForNavigation({ waitUntil: 'networidle0' });
 
         } else {
-
+          console.log("here!!")
           break;
 
         }

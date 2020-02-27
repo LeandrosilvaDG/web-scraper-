@@ -10,4 +10,6 @@ const premier = require('./premier');
 
   await premier.exportResuls(results);
 
+  console.table(results)
+
 })();
